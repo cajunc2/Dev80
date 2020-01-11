@@ -1,0 +1,123 @@
+package org.cajunc2.dev80.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+/**
+ * A utility class containing common icons for various controls throughout the
+ * application. Also contains some utility methods for creating icons from
+ * images or solid colors.
+ */
+public final class Icons {
+
+	public static final ImageIcon APP_ICON = iconFile("computer-chip-512.png");
+
+	public static final Icon NEW_PROJECT = iconFile("application--plus.png");
+	public static final Icon OPEN_PROJECT = iconFile("folder-open.png");
+	public static final Icon EDIT_PROJECT = iconFile("application--pencil.png");
+	public static final Icon REFRESH = iconFile("arrow-circle-double.png");
+
+	public static final Icon NEW_FILE = iconFile("document--plus.png");
+	public static final Icon OPEN_FILE = iconFile("folder-open-document.png");
+	public static final Icon SAVE_FILE = iconFile("disk.png");
+	public static final Icon SAVE_AS_FILE = iconFile("disk--plus.png");
+	public static final Icon SAVE_ALL_FILES = iconFile("disks.png");
+	public static final Icon BOOKMARK = iconFile("bookmark.png");
+
+	public static final Icon RUN_PROJECT = iconFile("control.png");
+	public static final Icon STOP = iconFile("cross-octagon.png");
+	public static final Icon RESET = iconFile("arrow-circle-315-left.png");
+	public static final Icon BUILD_FILE = iconFile("document-binary.png");
+	public static final Icon BUILD_PROJECT = iconFile("compile.png");
+	public static final Icon EXPORT_ROM = iconFile("document-binary.png");
+	public static final Icon BURN_ROM = iconFile("burn.png");
+
+	public static final Icon DOCUMENT = iconFile("document-attribute-z.png");
+	public static final Icon DOCUMENT_EDITED = iconFile("blue-document-attribute-z.png");
+	public static final Icon DOCUMENT_FLAGGED = iconFile("document-bookmark.png");
+	public static final Icon DOCUMENT_EDITED_FLAGGED = iconFile("blue-document-bookmark.png");
+	public static final Icon DOCUMENT_MAIN = iconFile("document--arrow.png");
+	public static final Icon TAB_CLOSE = iconFile("cross-small.png");
+
+	public static final Icon RUN_SLOW = iconFile("control.png");
+	public static final Icon RUN_FAST = iconFile("control-double.png");
+	public static final Icon RUN_INCR = iconFile("control-stop.png");
+	public static final Icon RUN_STEP = iconFile("arrow-step-over.png");
+	public static final Icon RUN_CURSOR = iconFile("control-cursor.png");
+	public static final Icon RUN_PAUSE = iconFile("control-pause.png");
+
+	public static final Icon STATUS_GREEN = iconFile("status.png");
+	public static final Icon STATUS_YELLOW = iconFile("status-away.png");
+	public static final Icon STATUS_RED = iconFile("status-busy.png");
+	public static final Icon STATUS_GRAY = iconFile("status-offline.png");
+
+	public static final Icon LINE_ERROR = iconFile("status-busy-shadowless.png");
+
+	public static final Icon KEYPAD = iconFile("keyboard.png");
+	public static final Icon DISPLAY = iconFile("monitor.png");
+	public static final Icon CPUMON = iconFile("processor.png");
+
+	public static final Icon TREE_PROJECT = iconFile("application-list.png");
+	public static final Icon TREE_FOLDER = iconFile("blue-folder-horizontal.png");
+	public static final Icon TREE_FOLDER_OPEN = iconFile("blue-folder-horizontal-open.png");
+	public static final Icon TREE_FILE = DOCUMENT;
+	public static final Icon TREE_FILE_MAIN = DOCUMENT_FLAGGED;
+
+	private Icons() {
+		throw new RuntimeException("You didn't REALLY just try to instantiate a utility class, did you?");
+	}
+
+	/**
+	 * Creates an ImageIcon with the specified image file, located in
+	 * /resources/images/icons
+	 *
+	 * @param string
+	 *            - The filename for the icon image file
+	 */
+	public static ImageIcon iconFile(String string) {
+		String resourceRef = "org/cajunc2/system/ui/resources/icons/" + string;
+		URL iconLocation = ClassLoader.getSystemClassLoader().getResource(resourceRef);
+		if (iconLocation == null) {
+			throw new RuntimeException("Unable to load icon: " + resourceRef);
+		}
+		return new ImageIcon(iconLocation);
+	}
+
+	/**
+	 * Creates solid-color icon with the specified color and size
+	 *
+	 * @param color
+	 *            - The color for the icon
+	 * @param size
+	 *            - The size of the icon
+	 */
+	public static Icon solidColor(Color color, Dimension size) {
+		return solidColor(color, size.width, size.height);
+	}
+
+	/**
+	 * Creates solid-color icon with the specified color and size
+	 *
+	 * @param color
+	 *            - The color for the icon
+	 * @param width
+	 *            - The width of the icon
+	 * @param height
+	 *            - The height of the icon
+	 */
+	public static Icon solidColor(Color color, int width, int height) {
+		Image image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics g = image.getGraphics();
+		g.setColor(color);
+		g.fillRect(0, 0, width, height);
+		image.flush();
+		return new ImageIcon(image);
+	}
+}

@@ -1,0 +1,9 @@
+<synth>
+	<style id="backingStyle">
+		<state>
+			<color value="#f4f4f4" type="BACKGROUND" />
+			<color value="black" type="FOREGROUND" />
+		</state>
+	</style>
+	<bind style="backingStyle" type="region" key=".*" />
+</synth>
