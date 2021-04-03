@@ -111,13 +111,9 @@ public class ProjectBrowser extends JPanel {
 		};
 		tree.addMouseListener(ml);
 
-		if (project == null) {
-			tree.setVisible(false);
-		} else {
-			CreateChildNodes ccn = new CreateChildNodes(fileRoot, root);
-			ccn.run();
-			tree.expandRow(0);
-		}
+		CreateChildNodes ccn = new CreateChildNodes(fileRoot, root);
+		ccn.run();
+		tree.expandRow(0);
 
 		Commands.EXPORT_ROM.subscribe(new ExportRomTopicHandler());
 		Commands.REFRESH_PROJECT.subscribe(new RefreshHandler());
@@ -179,7 +175,9 @@ public class ProjectBrowser extends JPanel {
 				return;
 			Arrays.sort(files, new FileSorter());
 			for (File file : files) {
-				if (file.getName().startsWith(".") || (file.isFile() && !(file.getName().toUpperCase().endsWith(".ASM") || file.getName().toUpperCase().endsWith(".Z80")))) {
+				if (file.getName().startsWith(".")
+						|| (file.isFile() && !(file.getName().toUpperCase().endsWith(".ASM")
+								|| file.getName().toUpperCase().endsWith(".Z80")))) {
 					continue;
 				}
 				DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(file);
@@ -215,9 +213,11 @@ public class ProjectBrowser extends JPanel {
 		}
 
 		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected,
+				boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-			ProjectTreeCellRenderer c = (ProjectTreeCellRenderer) super.getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, hasFocus);
+			ProjectTreeCellRenderer c = (ProjectTreeCellRenderer) super.getTreeCellRendererComponent(tree, value,
+					isSelected, expanded, leaf, row, hasFocus);
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 			File data = (File) node.getUserObject();
 			c.setText(data.getName());
@@ -255,7 +255,8 @@ public class ProjectBrowser extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						logger.finer("Rename!");
-						String newName = JOptionPane.showInputDialog("Rename '" + project.getTitle() + "' to:", project.getTitle());
+						String newName = JOptionPane.showInputDialog(
+								"Rename '" + project.getTitle() + "' to:", project.getTitle());
 						if (newName == null) {
 							return;
 						}
@@ -291,7 +292,8 @@ public class ProjectBrowser extends JPanel {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(ProjectBrowser.this, "Failed to write binary file", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(ProjectBrowser.this, "Failed to write binary file", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

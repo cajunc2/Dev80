@@ -115,8 +115,8 @@ public class ProjectWindow extends JFrame {
                   public void drop(DropTargetDropEvent dtde) {
                         try {
                               dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                              List<File> droppedFiles = (List<File>) dtde.getTransferable()
-                                          .getTransferData(DataFlavor.javaFileListFlavor);
+                              @SuppressWarnings("unchecked")
+                              List<File> droppedFiles = (List<File>) dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
                               project.addFiles(droppedFiles);
                               ((AbstractTableModel) fileTable.getModel()).fireTableDataChanged();
                               dtde.dropComplete(true);

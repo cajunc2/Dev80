@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.SortedMap;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.SwingWorker;
 
 public class LabelParseWorker extends SwingWorker<Void, Void> {
-	private static final Logger logger = Logger.getLogger(LabelParseWorker.class.getName());
 	private static final Pattern LABEL_PATTERN = Pattern.compile("(^\\w*):.*");
 
 	private final File file;

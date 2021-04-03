@@ -37,6 +37,8 @@ import org.cajunc2.dev80.ui.Icons;
 import org.cajunc2.dev80.ui.util.WindowPositionUtil;
 
 public class WelcomeWindow extends JFrame {
+      private static final long serialVersionUID = 1L;
+
       public WelcomeWindow() {
             setTitle("Dev80");
             Container contentPane = this.getContentPane();

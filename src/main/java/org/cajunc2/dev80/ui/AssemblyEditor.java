@@ -45,7 +45,7 @@ public class AssemblyEditor extends TextEditorPane {
 
 	public AssemblyEditor(Project project, File file) throws IOException {
 		super(INSERT_MODE, false, new FileFileLocation(file));
-		FileLocation fl = FileLocation.create(file.getAbsolutePath());
+		// FileLocation fl = FileLocation.create(file.getAbsolutePath());
 		this.setLinkScanningMask(InputEvent.META_DOWN_MASK);
 		this.setSyntaxEditingStyle("text/asmz80");
 		this.setSyntaxScheme(new SyntaxSchemeFactory().getDefault());

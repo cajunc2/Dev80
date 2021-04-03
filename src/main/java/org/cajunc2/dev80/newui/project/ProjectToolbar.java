@@ -8,10 +8,9 @@ import javax.swing.UIManager;
 import org.cajunc2.dev80.ui.Icons;
 
 class ProjectToolbar extends JToolBar {
-      private final ProjectWindow projectWindow;
+      private static final long serialVersionUID = 1L;
 
       public ProjectToolbar(ProjectWindow projectWindow) {
-            this.projectWindow = projectWindow;
             this.setFloatable(false);
             this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("Separator.foreground")));
 
