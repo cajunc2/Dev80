@@ -1,3 +1,7 @@
 /target
 .project
 .DS_Store
+.vscode/
+.settings/
+.classpath
+MiniPROProgrammer.log
