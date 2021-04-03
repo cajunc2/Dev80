@@ -17,58 +17,66 @@ import javax.swing.ImageIcon;
  */
 public final class Icons {
 
-	public static final ImageIcon APP_ICON = iconFile("computer-chip-512.png");
+	public static final ImageIcon APP_ICON = iconFile("AppIcon.png");
 
-	public static final Icon NEW_PROJECT = iconFile("application--plus.png");
-	public static final Icon OPEN_PROJECT = iconFile("folder-open.png");
-	public static final Icon EDIT_PROJECT = iconFile("application--pencil.png");
-	public static final Icon REFRESH = iconFile("arrow-circle-double.png");
+	public static final ImageIcon NEW_PROJECT = iconFile("application--plus.png");
+	public static final ImageIcon OPEN_PROJECT = iconFile("folder-open.png");
+	public static final ImageIcon EDIT_PROJECT = iconFile("application--pencil.png");
+	public static final ImageIcon PROJECT_PROPERTIES = iconFile("ui-check-boxes-list.png");
+	public static final ImageIcon REFRESH = iconFile("arrow-circle-double.png");
 
-	public static final Icon NEW_FILE = iconFile("document--plus.png");
-	public static final Icon OPEN_FILE = iconFile("folder-open-document.png");
-	public static final Icon SAVE_FILE = iconFile("disk.png");
-	public static final Icon SAVE_AS_FILE = iconFile("disk--plus.png");
-	public static final Icon SAVE_ALL_FILES = iconFile("disks.png");
-	public static final Icon BOOKMARK = iconFile("bookmark.png");
+	public static final ImageIcon NEW_FILE = iconFile("document--plus.png");
+	public static final ImageIcon OPEN_FILE = iconFile("folder-open-document.png");
+	public static final ImageIcon SAVE_FILE = iconFile("disk.png");
+	public static final ImageIcon SAVE_AS_FILE = iconFile("disk--plus.png");
+	public static final ImageIcon SAVE_ALL_FILES = iconFile("disks.png");
+	public static final ImageIcon BOOKMARK = iconFile("bookmark.png");
 
-	public static final Icon RUN_PROJECT = iconFile("control.png");
-	public static final Icon STOP = iconFile("cross-octagon.png");
-	public static final Icon RESET = iconFile("arrow-circle-315-left.png");
-	public static final Icon BUILD_FILE = iconFile("document-binary.png");
-	public static final Icon BUILD_PROJECT = iconFile("compile.png");
-	public static final Icon EXPORT_ROM = iconFile("document-binary.png");
-	public static final Icon BURN_ROM = iconFile("burn.png");
+	public static final ImageIcon RUN_PROJECT = iconFile("control.png");
+	public static final ImageIcon STOP = iconFile("cross-octagon.png");
+	public static final ImageIcon RESET = iconFile("arrow-circle-315-left.png");
+	public static final ImageIcon BUILD_FILE = iconFile("document-binary.png");
+	public static final ImageIcon BUILD_PROJECT = iconFile("compile.png");
+	public static final ImageIcon EXPORT_ROM = iconFile("document-binary.png");
+	public static final ImageIcon BURN_ROM = iconFile("burn.png");
 
-	public static final Icon DOCUMENT = iconFile("document-attribute-z.png");
-	public static final Icon DOCUMENT_EDITED = iconFile("blue-document-attribute-z.png");
-	public static final Icon DOCUMENT_FLAGGED = iconFile("document-bookmark.png");
-	public static final Icon DOCUMENT_EDITED_FLAGGED = iconFile("blue-document-bookmark.png");
-	public static final Icon DOCUMENT_MAIN = iconFile("document--arrow.png");
-	public static final Icon TAB_CLOSE = iconFile("cross-small.png");
+	public static final ImageIcon DOCUMENT = iconFile("document-attribute-z.png");
+	public static final ImageIcon DOCUMENT_EDITED = iconFile("blue-document-attribute-z.png");
+	public static final ImageIcon DOCUMENT_FLAGGED = iconFile("document-bookmark.png");
+	public static final ImageIcon DOCUMENT_EDITED_FLAGGED = iconFile("blue-document-bookmark.png");
+	public static final ImageIcon DOCUMENT_MAIN = iconFile("document--arrow.png");
+	public static final ImageIcon TAB_CLOSE = iconFile("cross-small.png");
 
-	public static final Icon RUN_SLOW = iconFile("control.png");
-	public static final Icon RUN_FAST = iconFile("control-double.png");
-	public static final Icon RUN_INCR = iconFile("control-stop.png");
-	public static final Icon RUN_STEP = iconFile("arrow-step-over.png");
-	public static final Icon RUN_CURSOR = iconFile("control-cursor.png");
-	public static final Icon RUN_PAUSE = iconFile("control-pause.png");
+	public static final ImageIcon RUN_SLOW = iconFile("control.png");
+	public static final ImageIcon RUN_FAST = iconFile("control-double.png");
+	public static final ImageIcon RUN_INCR = iconFile("control-stop.png");
+	public static final ImageIcon RUN_STEP = iconFile("arrow-step-over.png");
+	public static final ImageIcon RUN_CURSOR = iconFile("control-cursor.png");
+	public static final ImageIcon RUN_PAUSE = iconFile("control-pause.png");
 
-	public static final Icon STATUS_GREEN = iconFile("status.png");
-	public static final Icon STATUS_YELLOW = iconFile("status-away.png");
-	public static final Icon STATUS_RED = iconFile("status-busy.png");
-	public static final Icon STATUS_GRAY = iconFile("status-offline.png");
+	public static final ImageIcon STATUS_GREEN = iconFile("status.png");
+	public static final ImageIcon STATUS_YELLOW = iconFile("status-away.png");
+	public static final ImageIcon STATUS_RED = iconFile("status-busy.png");
+	public static final ImageIcon STATUS_GRAY = iconFile("status-offline.png");
 
-	public static final Icon LINE_ERROR = iconFile("status-busy-shadowless.png");
+	public static final ImageIcon LINE_ERROR = iconFile("status-busy-shadowless.png");
 
-	public static final Icon KEYPAD = iconFile("keyboard.png");
-	public static final Icon DISPLAY = iconFile("monitor.png");
-	public static final Icon CPUMON = iconFile("processor.png");
+	public static final ImageIcon KEYPAD = iconFile("keyboard.png");
+	public static final ImageIcon DISPLAY = iconFile("monitor.png");
+	public static final ImageIcon CPUMON = iconFile("processor.png");
 
-	public static final Icon TREE_PROJECT = iconFile("application-list.png");
-	public static final Icon TREE_FOLDER = iconFile("blue-folder-horizontal.png");
-	public static final Icon TREE_FOLDER_OPEN = iconFile("blue-folder-horizontal-open.png");
-	public static final Icon TREE_FILE = DOCUMENT;
-	public static final Icon TREE_FILE_MAIN = DOCUMENT_FLAGGED;
+	public static final ImageIcon TREE_PROJECT = iconFile("application-list.png");
+	public static final ImageIcon TREE_FOLDER = iconFile("blue-folder-horizontal.png");
+	public static final ImageIcon TREE_FOLDER_OPEN = iconFile("blue-folder-horizontal-open.png");
+	public static final ImageIcon TREE_FILE = DOCUMENT;
+	public static final ImageIcon TREE_FILE_MAIN = DOCUMENT_FLAGGED;
+
+	public static final ImageIcon ADD = iconFile("plus.png");
+	public static final ImageIcon ADD_LARGE = iconFile("plus-32.png");
+	public static final ImageIcon REMOVE = iconFile("minus.png");
+	
+	public static final ImageIcon ADD_FILE = iconFile("document--plus.png");
+	public static final ImageIcon REMOVE_FILE = iconFile("document--minus.png");
 
 	private Icons() {
 		throw new RuntimeException("You didn't REALLY just try to instantiate a utility class, did you?");

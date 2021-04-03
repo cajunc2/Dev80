@@ -1,143 +1,148 @@
 package org.cajunc2.dev80.project;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Objects;
 
-import org.cajunc2.util.json.JSONUtil;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import javax.swing.JFrame;
+
+import com.google.gson.Gson;
 
 public class Project {
-	public static final Project EMPTY = new Project();
 	public static final String FILE_NAME = ".d80project";
 
+	private final File projectFile;
 	private final File projectDir;
-	private final List<File> openFiles = new ArrayList<File>();
-	private File compileFile;
-	private File outputFile;
-	private String title;
+	private ProjectData projectData;
 
-	private final ProjectLabelIndex labelIndex = new ProjectLabelIndex();
+	private transient final ProjectLabelIndex labelIndex = new ProjectLabelIndex();
 
-	public static Project createNew(File projectDir, String title) throws Exception {
-		File compileFile = new File(projectDir, title + ".asm");
-		File outputFile = new File(projectDir, title + ".rom");
-		return new Project(projectDir, compileFile, outputFile, title);
-	}
-
-	public static Project load(File projectFile) throws Exception {
-		File projectDir = projectFile.getParentFile();
-		JSONObject object = JSONUtil.parse(projectFile);
-		String title = (String) object.get("title");
-		File compileFile = new File(projectFile.getParent() + File.separator + object.get("compileFile").toString());
-		File outputFile = new File(projectFile.getParent() + File.separator + object.get("outputFile").toString());
-		Project result = new Project(projectDir, compileFile, outputFile, title);
-		JSONArray openFiles = (JSONArray) object.get("openFiles");
-		for (Object o : openFiles) {
-			File openFile = new File(projectFile.getParent() + File.separator + o.toString());
-			result.openFiles.add(openFile);
-		}
-		return result;
-	}
-
-	private Project() {
-		this.projectDir = new File("/dev/null");
-		this.compileFile = new File("/dev/null");
-		this.outputFile = new File("/dev/null");
-		this.title = "Untitled";
-	}
-
-	private Project(File projectDir, File compileFile, File outputFile, String title) {
+	public Project(File projectDir, String title) throws Exception {
 		this.projectDir = projectDir;
-		this.compileFile = compileFile;
-		this.outputFile = outputFile;
-		this.title = title;
+		this.projectFile = new File(projectDir.getAbsolutePath() + File.separator + FILE_NAME);
+		this.projectData = new ProjectData();
+		this.projectData.title = title;
 	}
 
-	public void save(File f) {
+	public Project(File projectFile) throws Exception {
+		this.projectFile = projectFile;
+		this.projectDir = projectFile.getParentFile();
+		String jsonString = new String(Files.readAllBytes(projectFile.toPath()));
+		this.projectData = new Gson().fromJson(jsonString, ProjectData.class);
+	}
 
+	public void save() throws Exception {
+		if (!this.projectFile.exists()) {
+			this.projectFile.createNewFile();
+		}
+		String jsonData = new Gson().toJson(this.projectData, ProjectData.class);
+		Files.write(this.projectFile.toPath(), jsonData.getBytes(), StandardOpenOption.TRUNCATE_EXISTING,
+				StandardOpenOption.WRITE);
 	}
 
 	public String getTitle() {
-		return this.title;
+		return this.projectData.title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.projectData.title = title;
 	}
 
 	public File getCompileFile() {
-		return this.compileFile;
+		return this.projectData.compileFile;
 	}
 
 	public File getProjectDir() {
 		return this.projectDir;
 	}
 
-	public List<File> getOpenFiles() {
-		return openFiles;
-	}
-
 	public File getOutputFile() {
-		return outputFile;
+		return this.projectData.outputFile;
 	}
 
 	public void setOutputFile(File outputFile) {
-		this.outputFile = outputFile;
+		this.projectData.outputFile = outputFile;
 	}
 
 	public ProjectLabelIndex getLabelIndex() {
 		return labelIndex;
 	}
 
+	public void positionWindow(String windowIdentifier, JFrame frame) {
+		WindowParam wp = this.projectData.windowParams.get(windowIdentifier);
+		if (wp == null) {
+			return;
+		}
+		frame.setLocationByPlatform(false);
+		frame.setLocation(wp.x, wp.y);
+		frame.setSize(wp.width, wp.height);
+
+		// check if the window is on screen... if not, move it so it's visible
+	}
+
+	public void updateWindowPosition(String windowIdentifier, JFrame frame) {
+		WindowParam wp = new WindowParam();
+		wp.x = frame.getLocation().x;
+		wp.y = frame.getLocation().y;
+		wp.width = frame.getWidth();
+		wp.height = frame.getHeight();
+		this.projectData.windowParams.put(windowIdentifier, wp);
+		try {
+			this.save();
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			// might not be the end of the world since we're just saving window placement
+			e.printStackTrace();
+		}
+	}
+
+	public List<File> getFiles() {
+		return this.projectData.files;
+	}
+
+	public void addFiles(List<File> files) throws Exception {
+		this.projectData.files.addAll(files);
+		save();
+	}
+
+	public void removeFile(File file) throws Exception {
+		this.projectData.files.remove(file);
+		save();
+	}
+
+	public void removeFile(int index) throws Exception {
+		this.projectData.files.remove(index);
+		save();
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((compileFile == null) ? 0 : compileFile.hashCode());
-		result = prime * result + ((openFiles == null) ? 0 : openFiles.hashCode());
-		result = prime * result + ((outputFile == null) ? 0 : outputFile.hashCode());
-		result = prime * result + ((projectDir == null) ? 0 : projectDir.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		return result;
+		return Objects.hash(labelIndex, projectData, projectDir, projectFile);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Project other = (Project) obj;
-		if (compileFile == null) {
-			if (other.compileFile != null)
-				return false;
-		} else if (!compileFile.equals(other.compileFile))
-			return false;
-		if (openFiles == null) {
-			if (other.openFiles != null)
-				return false;
-		} else if (!openFiles.equals(other.openFiles))
-			return false;
-		if (outputFile == null) {
-			if (other.outputFile != null)
-				return false;
-		} else if (!outputFile.equals(other.outputFile))
-			return false;
-		if (projectDir == null) {
-			if (other.projectDir != null)
-				return false;
-		} else if (!projectDir.equals(other.projectDir))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
+		return Objects.equals(labelIndex, other.labelIndex) && Objects.equals(projectData, other.projectData)
+				&& Objects.equals(projectDir, other.projectDir)
+				&& Objects.equals(projectFile, other.projectFile);
+	}
+
+	public void setCompileFile(File compileFile) throws Exception {
+		this.projectData.compileFile = compileFile;
+		save();
 	}
 
 }

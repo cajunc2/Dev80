@@ -225,6 +225,8 @@ public class Z80TokenMaker extends AbstractTokenMaker {
 		tokenMap.put("dm", directive);
 		tokenMap.put("section", directive);
 		tokenMap.put("ends", directive);
+		tokenMap.put("virtual", directive);
+		tokenMap.put("equ", directive);
 
 		/* Conditions */
 		// tokenMap.put("c", condition);
@@ -337,6 +339,8 @@ public class Z80TokenMaker extends AbstractTokenMaker {
 				case 'E':
 				case 'f':
 				case 'F':
+				case 'h':
+				case 'H':
 					continue;
 
 				case ' ':

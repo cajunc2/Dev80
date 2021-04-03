@@ -41,7 +41,7 @@ public class MainToolbar extends JToolBar {
 		        Commands.BUILD_PROJECT);
 		this.add(buildButton);
 		this.add(new ToolbarButton(Icons.BURN_ROM, "Burn EEPROM chip", Commands.BURN_ROM));
-		this.add(new ROMBurnProgressBar());
+		// this.add(new ROMBurnProgressBar());
 
 		final ToolbarButton runFastButton = new ToolbarButton(Icons.RUN_FAST, "Run", Commands.RUN_SYSTEM);
 		final ToolbarButton runSlowButton = new ToolbarButton(Icons.RUN_SLOW, "Run (Slow)", Commands.RUN_SYSTEM_SLOW);

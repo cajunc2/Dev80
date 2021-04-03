@@ -22,14 +22,14 @@ public class OpenSpecificProjectTopicHandler implements TopicHandler<File> {
 	@Override
 	public void topicReceived(File payload) {
 		try {
-			Project project = Project.load(payload);
+			Project project = new Project(payload);
 			window.changeProject(project);
 			Commands.SET_BUILD_TARGET.publish(project.getCompileFile());
 
 			LabelParseWorker worker = new LabelParseWorker(project);
 			SwingUtilities.invokeLater(worker);
 		} catch (RuntimeException e) {
-			throw e;
+ 			throw e;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "", e);
 		}

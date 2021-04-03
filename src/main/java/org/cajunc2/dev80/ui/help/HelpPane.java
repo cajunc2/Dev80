@@ -46,13 +46,14 @@ public class HelpPane extends JPanel implements TopicHandler<AssemblyEditor> {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
-		Font f = new Font("Consolas", Font.BOLD, 12);
+		Font f = new Font("Consolas", Font.BOLD, 48);
 		mnemonic.setFont(f);
-
+		mnemonic.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.insets = new Insets(0, 0, 4, 0);
+		c.insets = new Insets(16, 0, 4, 0);
 		c.weightx = 0;
 		c.gridy = 0;
 		c.gridx = 0;
@@ -73,6 +74,7 @@ public class HelpPane extends JPanel implements TopicHandler<AssemblyEditor> {
 		c.insets = new Insets(8, 0, 0, 0);
 		c.gridheight = GridBagConstraints.REMAINDER;
 		this.opcodeScrollPane = new JScrollPane(opcodes);
+		this.opcodeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(this.opcodeScrollPane, c);
 
 		Events.CARET_MOVED.subscribe(this);

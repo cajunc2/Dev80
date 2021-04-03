@@ -28,7 +28,7 @@ public class OpenProjectTopicHandler implements TopicHandler<Void> {
 			return;
 		}
 		try {
-			Project project = Project.load(projectFile);
+			Project project = new Project(projectFile);
 			window.changeProject(project);
 			Commands.SET_BUILD_TARGET.publish(project.getCompileFile());
 			Events.PROJECT_OPENED.publish(project);

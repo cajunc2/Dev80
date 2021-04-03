@@ -1,4 +1,4 @@
-package org.cajunc2.dev80.ui;
+package org.cajunc2.dev80.ui.syntax;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,17 +6,17 @@ import java.awt.Font;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
-public class DefaultSyntaxScheme extends SyntaxScheme {
+public class LightSyntaxScheme extends SyntaxScheme {
 
-	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, 13);
-	private static final Font ITALIC = new Font("Consolas", Font.ITALIC, 13);
-	private static final Font BOLD = new Font("Consolas", Font.BOLD, 13);
+	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, 12);
+	private static final Font ITALIC = new Font("Consolas", Font.ITALIC, 12);
+	private static final Font BOLD = new Font("Consolas", Font.BOLD, 12);
 
 	private static class Colors {
 		public static final Color COMMENT = new Color(160, 160, 160);
 	}
 
-	public DefaultSyntaxScheme() {
+	public LightSyntaxScheme() {
 		super(PLAIN);
 		for (int i = 0; i < TokenTypes.DEFAULT_NUM_TOKEN_TYPES; i++) {
 			getStyle(i).font = PLAIN;

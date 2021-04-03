@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,15 +49,16 @@ public class ProjectBrowser extends JPanel {
 		DefaultTreeModel treeModel = new DefaultTreeModel(root);
 
 		tree = new JTree(treeModel);
-		tree.setBorder(BorderFactory.createEmptyBorder());
+		tree.setFont(getFont().deriveFont(11f));
+		// tree.setBorder(BorderFactory.createEmptyBorder());
 		tree.setShowsRootHandles(true);
 		tree.setCellRenderer(new ProjectTreeCellRenderer());
 		tree.setToggleClickCount(0);
 
 		JScrollPane scrollPane = new JScrollPane(tree);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-		this.setBorder(BorderFactory.createEmptyBorder());
+		// this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.setPreferredSize(new Dimension(256, 0));
@@ -111,7 +111,7 @@ public class ProjectBrowser extends JPanel {
 		};
 		tree.addMouseListener(ml);
 
-		if (project == Project.EMPTY) {
+		if (project == null) {
 			tree.setVisible(false);
 		} else {
 			CreateChildNodes ccn = new CreateChildNodes(fileRoot, root);

@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -49,6 +50,7 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 		super();
 		this.project = project;
 		setOpaque(false);
+		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		Commands.NEW_FILE.subscribe(this::newFile);
 		Commands.OPEN_FILE.subscribe(this::openFile);
 		Commands.CLOSE_FILE.subscribe(new CloseFileHandler());
@@ -63,20 +65,24 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 	}
 
 	public void newFile(Void v) {
-		AssemblyEditor editor = new AssemblyEditor(project);
+		try {
+		AssemblyEditor editor = new AssemblyEditor(project, null);
 		RTextScrollPane scrollPane = new RTextScrollPane(editor);
-		scrollPane.setBackground(Color.WHITE);
+		// scrollPane.setBackground(Color.WHITE);
 		scrollPane.getGutter().setIconRowHeaderInheritsGutterBackground(true);
-		scrollPane.getGutter().setBackground(Color.WHITE);
+		// scrollPane.getGutter().setBackground(Color.WHITE);
 		scrollPane.getGutter().setLineNumberFont(new Font("Consolas", Font.PLAIN, 12));
 		scrollPane.setIconRowHeaderEnabled(true);
 		scrollPane.getGutter().setBookmarkingEnabled(true);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		Icon i = getTabCount() == 0 ? Icons.DOCUMENT : Icons.DOCUMENT;
 		addTab("untitled", i, scrollPane);
 		setTabComponentAt(getTabCount() - 1, new TabComponent(null));
 		setSelectedIndex(getTabCount() - 1);
 		editor.grabFocus();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void displayError(CompileError payload) {
@@ -317,7 +323,7 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 
 	private void chooseFileForEditor(AssemblyEditor editor) {
 		fd.setMode(FileDialog.SAVE);
-		if (project != null && !project.equals(Project.EMPTY)) {
+		if (project != null) {
 			fd.setDirectory(project.getProjectDir().getAbsolutePath());
 		}
 		fd.setVisible(true);

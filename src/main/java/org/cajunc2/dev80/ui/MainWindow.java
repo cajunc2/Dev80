@@ -3,6 +3,7 @@ package org.cajunc2.dev80.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.MenuBar;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -11,23 +12,19 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
-import com.apple.eawt.FullScreenUtilities;
 import com.thizzer.jtouchbar.JTouchBar;
 
 import org.cajunc2.dev80.project.Project;
 import org.cajunc2.dev80.simulator.ui.SimulatorWindow;
 import org.cajunc2.dev80.ui.help.HelpPane;
 import org.cajunc2.dev80.ui.linklabels.LabelParseWorker;
-import org.cajunc2.dev80.ui.menu.MainMenuBar;
 import org.cajunc2.dev80.ui.topic.Commands;
 import org.cajunc2.dev80.ui.touchbar.MainWindowTouchbar;
 import org.cajunc2.dev80.ui.worker.ProjectAssemblerWorker;
@@ -39,28 +36,28 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 8310004670833073605L;
 
 	final FileDialog fd = new FileDialog(this);
-	CodeEditorTabPane codeEditorTabs = new CodeEditorTabPane(Project.EMPTY);
+	CodeEditorTabPane codeEditorTabs = new CodeEditorTabPane(null);
 	SimulatorWindow simulatorWindow = new SimulatorWindow(this);
 	ProjectBrowser projectBrowser;
 	JTouchBar touchBar = new MainWindowTouchbar();
 
-	public MainWindow() {
-		FullScreenUtilities.setWindowCanFullScreen(this, true);
+	public MainWindow(MenuBar menuBar) {
+		// FullScreenUtilities.setWindowCanFullScreen(this, true);
 		this.setTitle("Dev80");
-		this.setMenuBar(new MainMenuBar());
+		// this.setMenuBar(menuBar);
 		this.setIconImage(Icons.APP_ICON.getImage());
 
 		JPanel contentPane = new JPanel();
-		contentPane.setBorder(BorderFactory.createEmptyBorder());
+		// contentPane.setBorder(BorderFactory.createEmptyBorder());
 		this.setContentPane(contentPane);
 
 		contentPane.setLayout(new BorderLayout());
-		contentPane.add(new MainToolbar(), BorderLayout.NORTH);
+		// contentPane.add(new MainToolbar(), BorderLayout.NORTH);
 		JSplitPane projectBrowserSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		projectBrowserSplit.setBorder(BorderFactory.createEmptyBorder());
-		projectBrowserSplit.setDividerSize(8);
+		// projectBrowserSplit.setBorder(BorderFactory.createEmptyBorder());
+		// projectBrowserSplit.setDividerSize(8);
 
-		projectBrowser = new ProjectBrowser(Project.EMPTY);
+		projectBrowser = new ProjectBrowser(null);
 		projectBrowserSplit.add(projectBrowser, JSplitPane.LEFT);
 		projectBrowserSplit.add(new CodeEditorPanel(codeEditorTabs), JSplitPane.RIGHT);
 		contentPane.add(projectBrowserSplit, BorderLayout.CENTER);
@@ -69,7 +66,6 @@ public class MainWindow extends JFrame {
 
 		contentPane.setPreferredSize(new Dimension(1280, 768));
 		this.pack();
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);

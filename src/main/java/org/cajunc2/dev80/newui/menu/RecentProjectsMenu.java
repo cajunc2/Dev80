@@ -1,7 +1,5 @@
-package org.cajunc2.dev80.ui.menu;
+package org.cajunc2.dev80.newui.menu;
 
-import java.awt.Menu;
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,12 +10,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import org.cajunc2.dev80.newui.project.ProjectWindow;
 import org.cajunc2.dev80.project.Project;
-import org.cajunc2.dev80.ui.topic.Commands;
 import org.cajunc2.dev80.ui.topic.Events;
 import org.cajunc2.util.topic.TopicHandler;
 
-public class RecentProjectsMenu extends Menu {
+public class RecentProjectsMenu extends JMenu {
 	private static final Logger logger = Logger.getLogger(RecentProjectsMenu.class.getName());
 	private static final long serialVersionUID = 1L;
 	List<String> recentProjects;
@@ -47,11 +48,12 @@ public class RecentProjectsMenu extends Menu {
 			if (f.exists()) {
 				try {
 					final Project p = new Project(f);
-					MenuItem mi = new MenuItem(p.getTitle());
+					JMenuItem mi = new JMenuItem(p.getTitle());
 					mi.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							Commands.OPEN_SPECIFIC_PROJECT.publish(f);
+							ProjectWindow pw = new ProjectWindow(p);
+							pw.setVisible(true);
 						}
 					});
 					add(mi);
@@ -64,7 +66,7 @@ public class RecentProjectsMenu extends Menu {
 
 		addSeparator();
 
-		MenuItem clearMenuItem = new MenuItem("Clear Recent Projects");
+		JMenuItem clearMenuItem = new JMenuItem("Clear Recent Projects");
 		clearMenuItem.addActionListener(new ActionListener() {
 
 			@Override
