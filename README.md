@@ -1,4 +1,5 @@
+# Dev80
 
+A Java IDE for z80 assembly code.
 
-Some icons by Yusuke Kamiyamane. Licensed under a Creative Commons Attribution 3.0 License.
-http://p.yusukekamiyamane.com/
+Icons by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/). Licensed under a [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/).
