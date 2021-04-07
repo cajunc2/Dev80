@@ -90,7 +90,7 @@ public final class Icons {
 	 *            - The filename for the icon image file
 	 */
 	public static ImageIcon iconFile(String string) {
-		String resourceRef = "org/cajunc2/system/ui/resources/icons/" + string;
+		String resourceRef = "org/cajunc2/dev80/ui/resources/icons/" + string;
 		URL iconLocation = ClassLoader.getSystemClassLoader().getResource(resourceRef);
 		if (iconLocation == null) {
 			throw new RuntimeException("Unable to load icon: " + resourceRef);

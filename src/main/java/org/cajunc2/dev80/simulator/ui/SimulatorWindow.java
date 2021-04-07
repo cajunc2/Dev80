@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
 
+import com.codingrodent.microprocessor.Z80.Z80Core;
+
 import org.cajunc2.dev80.simulator.io.IOBus;
 import org.cajunc2.dev80.simulator.io.busdevice.CharLCD;
 import org.cajunc2.dev80.simulator.io.busdevice.Keypad16;
@@ -16,8 +18,6 @@ import org.cajunc2.dev80.ui.worker.SystemRunSlowWorker;
 import org.cajunc2.dev80.ui.worker.SystemRunWorker;
 import org.cajunc2.dev80.ui.worker.SystemStepWorker;
 import org.cajunc2.util.topic.TopicHandler;
-
-import net.sleepymouse.microprocessor.Z80.Z80Core;
 
 public class SimulatorWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -45,7 +45,7 @@ public class SimulatorWindow extends JFrame {
 
 			@Override
 			public void topicReceived(Void payload) {
-				cpu.setINT();
+				// cpu.setINT();
 			}
 		});
 

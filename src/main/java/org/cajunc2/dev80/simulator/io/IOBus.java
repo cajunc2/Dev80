@@ -1,8 +1,8 @@
 package org.cajunc2.dev80.simulator.io;
 
-import net.sleepymouse.microprocessor.IODevice;
+import com.codingrodent.microprocessor.IBaseDevice;
 
-public class IOBus implements IODevice {
+public class IOBus implements IBaseDevice {
 
 	private final BusDevice[] attachedDevices = new BusDevice[16];
 

@@ -2,7 +2,7 @@ package org.cajunc2.dev80.ui.worker;
 
 import javax.swing.SwingWorker;
 
-import net.sleepymouse.microprocessor.Z80.Z80Core;
+import com.codingrodent.microprocessor.Z80.Z80Core;
 
 import org.cajunc2.dev80.simulator.ui.CpuStatePanel;
 import org.cajunc2.dev80.ui.topic.Events;

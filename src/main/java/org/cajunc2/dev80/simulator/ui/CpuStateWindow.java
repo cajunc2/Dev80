@@ -14,12 +14,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import com.codingrodent.microprocessor.Z80.CPUConstants.RegisterNames;
+import com.codingrodent.microprocessor.Z80.Z80Core;
+
 import org.cajunc2.dev80.ui.Icons;
 import org.cajunc2.dev80.ui.topic.Events;
 import org.cajunc2.util.topic.TopicHandler;
-
-import net.sleepymouse.microprocessor.Z80.Z80Core;
-import net.sleepymouse.microprocessor.Z80.Z80Core.RegisterNames;
 
 public class CpuStateWindow extends JDialog {
 
