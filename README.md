@@ -1,6 +1,8 @@
 # Dev80
 
-A Java IDE for z80 assembly code.
+A Java IDE for z80 assembly code. Not targeted at any specific development case.
+
+Currently a work-in-progress and due for some gentle refactoring before work continues.
 
 
 ## Acknowledgements
