@@ -1,12 +1,14 @@
 package org.cajunc2.dev80.ui.worker;
 
 import java.awt.Font;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,19 +35,16 @@ public class ProjectAssemblerWorker extends SwingWorker<byte[], Void> {
 			List<File> includeDirs = new ArrayList<File>();
 			includeDirs.add(this.project.getProjectDir());
 
-			FileReader reader = new FileReader(project.getCompileFile());
-			try {
-				Source source = new SourceBuilder(includeDirs).parse(reader, project.getCompileFile());
-				source.register();
-				source.expand();
-				source.resolve();
-				byte[] objectCode = source.generateObjectCode();
+			List<Path> includePaths = includeDirs.stream().map(f -> f.toPath()).collect(Collectors.toList());
+			Source source = new SourceBuilder(includePaths).parse(project.getCompileFile().toPath());
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+				source.assemble(baos);
+				byte[] objectCode = baos.toByteArray();
 				Events.COMPILE_SUCCESS.publish(objectCode);
 				return objectCode;
-			} finally {
-				reader.close();
 			}
 		} catch (AssemblyException e) {
+			logger.log(Level.INFO, "Compile Error", e);
 			CompileError err = new CompileError(e.getPlainMessage(), e);
 			Events.COMPILE_ERROR.publish(err);
 			return null;

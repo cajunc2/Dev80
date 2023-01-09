@@ -6,115 +6,109 @@ import java.util.List;
 import nl.grauw.glass.instructions.InstructionFactory;
 
 public abstract class Expression {
-	
+
 	public abstract String toDebugString();
-	
+
 	public abstract Expression copy(Context context);
-	
-	public Expression resolve() {
-		return this;
+
+	public abstract boolean is(Expression type);
+
+	public Expression get(Expression type) {
+		return new ErrorLiteral(new EvaluationException("Not of type " + type)).get(type);
 	}
-	
-	public boolean isInteger() {
-		return false;
-	}
-	
+
 	public int getInteger() {
+		if (is(Type.INTEGER))
+			return get(Type.INTEGER).getInteger();
 		throw new EvaluationException("Not an integer.");
 	}
-	
-	public boolean isString() {
-		return false;
-	}
-	
+
 	public String getString() {
+		if (is(Type.STRING))
+			return get(Type.STRING).getString();
 		throw new EvaluationException("Not a string.");
 	}
-	
-	public boolean isRegister() {
-		return false;
-	}
-	
+
 	public Register getRegister() {
+		if (is(Type.REGISTER)) {
+			Expression register = get(Type.REGISTER);
+			if (register instanceof Register)
+				return (Register)register;
+		}
 		throw new EvaluationException("Not a register.");
 	}
-	
-	public boolean isFlag() {
-		return false;
-	}
-	
+
 	public Flag getFlag() {
+		if (is(Type.FLAG)) {
+			Expression flag = get(Type.FLAG);
+			if (flag instanceof Flag)
+				return (Flag)flag;
+		}
 		throw new EvaluationException("Not a flag.");
 	}
-	
-	public boolean isGroup() {
-		return false;
-	}
-	
+
 	public Identifier getAnnotation() {
-		return null;
+		if (is(Type.ANNOTATION))
+			return get(Type.ANNOTATION).getAnnotation();
+		throw new EvaluationException("Not an annotation.");
 	}
-	
+
 	public Expression getAnnotee() {
-		return this;
+		if (is(Type.ANNOTATION))
+			return get(Type.ANNOTATION).getAnnotee();
+		throw new EvaluationException("Not an annotation.");
 	}
-	
-	public boolean isInstruction() {
-		return false;
-	}
-	
+
 	public InstructionFactory getInstruction() {
+		if (is(Type.INSTRUCTION))
+			return get(Type.INSTRUCTION).getInstruction();
 		throw new EvaluationException("Not an instruction.");
 	}
-	
-	public boolean isContext() {
-		return false;
-	}
-	
+
 	public Context getContext() {
+		if (is(Type.CONTEXT))
+			return get(Type.CONTEXT).getContext();
 		throw new EvaluationException("Not a context.");
 	}
-	
-	public boolean isSectionContext() {
-		return false;
-	}
-	
+
 	public SectionContext getSectionContext() {
-		throw new EvaluationException("Not a context.");
+		if (is(Type.SECTIONCONTEXT))
+			return get(Type.SECTIONCONTEXT).getSectionContext();
+		throw new EvaluationException("Not a section context.");
 	}
-	
-	public int getAddress() {
-		int address = getInteger();
-		if (address < 0 || address >= 0x10000)
-			throw new EvaluationException("Address out of range: " + Integer.toHexString(address) + "H");
-		return address;
+
+	public Expression getHead() {
+		return this;
 	}
-	
-	public List<Expression> getList() {
+
+	public Expression getTail() {
+		return null;
+	}
+
+	public List<Expression> getFlatList() {
 		List<Expression> list = new ArrayList<>();
-		addToList(list);
+		addToFlatList(list);
 		return list;
 	}
-	
-	protected void addToList(List<Expression> list) {
-		list.add(this);
+
+	private void addToFlatList(List<Expression> list) {
+		Expression tail = this;
+		while (tail.is(Type.SEQUENCE)) {
+			Expression sequence = tail.get(Type.SEQUENCE);
+			sequence.getHead().addToFlatList(list);
+			tail = sequence.getTail();
+		}
+		list.add(tail);
 	}
-	
-	public Expression getElement() {
-		return getElement(0);
-	}
-	
+
 	public Expression getElement(int index) {
 		return index == 0 ? this : null;
 	}
-	
-	public Expression getNext() {
-		return null;
-	}
-	
+
 	public String getHexValue() {
-		String string = Integer.toHexString(getInteger()).toUpperCase();
-		return (string.charAt(0) >= 'A' && string.charAt(0) <= 'F' ? "0" : "") + string + "H";
+		int value = getInteger();
+		String string = Integer.toHexString(Math.abs(value)).toUpperCase();
+		return (value < 0 ? "-" : "") + (string.charAt(0) >= 'A' && string.charAt(0) <= 'F' ? "0" : "") + string + "H";
 	}
-	
+
 }

@@ -203,11 +203,9 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 
 	public void buildFile(MemoryView memoryView) {
 		TabComponent buildTargetComponent = null;
-		int buildTargetIndex = -1;
 		for (int i = 0; i < getTabCount(); i++) {
 			TabComponent tc = (TabComponent) getTabComponentAt(i);
 			if (tc.getFile() != null && tc.getFile().equals(this.buildTargetFile)) {
-				buildTargetIndex = i;
 				buildTargetComponent = tc;
 				break;
 			}
@@ -216,9 +214,7 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 			JOptionPane.showMessageDialog(this, "No build target set");
 			return;
 		}
-		RTextScrollPane editorScrollPane = (RTextScrollPane) getComponentAt(buildTargetIndex);
-		AssemblyEditor editor = (AssemblyEditor) editorScrollPane.getTextArea();
-		AssemblerWorker worker = new AssemblerWorker(editor.getText(), memoryView, buildTargetComponent.getFile());
+		AssemblerWorker worker = new AssemblerWorker(memoryView, buildTargetComponent.getFile());
 		try {
 			worker.execute();
 		} catch (RuntimeException e) {
@@ -232,9 +228,7 @@ public class CodeEditorTabPane extends DnDTabbedPane {
 		for (int i = 0; i < getTabCount(); i++) {
 			TabComponent c = (TabComponent) getTabComponentAt(i);
 			if (c.getFile().equals(mainFile)) {
-				RTextScrollPane editorScrollPane = (RTextScrollPane) CodeEditorTabPane.this.getComponentAt(i);
-				AssemblyEditor editor = (AssemblyEditor) editorScrollPane.getTextArea();
-				AssemblerWorker worker = new AssemblerWorker(editor.getText(), memoryView, mainFile);
+				AssemblerWorker worker = new AssemblerWorker(memoryView, mainFile);
 				try {
 					worker.execute();
 				} catch (RuntimeException e) {

@@ -1,41 +1,37 @@
 package nl.grauw.glass.instructions;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import nl.grauw.glass.Scope;
+import nl.grauw.glass.expressions.Add;
+import nl.grauw.glass.expressions.Expression;
+import nl.grauw.glass.expressions.IntegerLiteral;
 import nl.grauw.glass.expressions.Register;
+import nl.grauw.glass.expressions.Type;
 
 public abstract class InstructionObject {
-	
+
 	protected final Scope context;
-	
+
 	public InstructionObject(Scope context) {
 		this.context = context;
 	}
-	
-	public int resolve(int address) {
+
+	public Expression resolve(Expression address) {
 		context.setAddress(address);
-		return address + getSize();
+		return new Add(getSize(), address).get(Type.INTEGER);
 	}
-	
-	public abstract int getSize();
-	
-	public void generateObjectCode(OutputStream output) throws IOException {
-		byte[] object = getBytes();
-		output.write(object, 0, object.length);
-	}
-	
+
+	public abstract Expression getSize();
+
 	public abstract byte[] getBytes();
-	
-	public int indexifyDirect(Register register, int size) {
-		return register.isIndex() ? size + 1 : size;
+
+	public Expression indexifyDirect(Register register, Expression size) {
+		return register.isIndex() ? new Add(IntegerLiteral.ONE, size) : size;
 	}
-	
-	public int indexifyIndirect(Register register, int size) {
-		return register.isIndex() ? register.isPair() ? size + 2 : size + 1 : size;
+
+	public Expression indexifyIndirect(Register register, Expression size) {
+		return register.isIndex() ? register.isPair() ? new Add(IntegerLiteral.TWO, size) : new Add(IntegerLiteral.ONE, size) : size;
 	}
-	
+
 	/**
 	 * Inserts index register prefix in the object code if needed.
 	 */
@@ -46,7 +42,7 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Can not have index offset for direct addressing.");
 		return new byte[] { register.getIndexCode(), byte1 };
 	}
-	
+
 	public byte[] indexifyDirect(Register register, byte byte1, byte byte2) {
 		if (!register.isIndex())
 			return new byte[] { byte1, byte2 };
@@ -54,7 +50,7 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Can not have index offset for direct addressing.");
 		return new byte[] { register.getIndexCode(), byte1, byte2 };
 	}
-	
+
 	public byte[] indexifyDirect(Register register, byte byte1, byte byte2, byte byte3) {
 		if (!register.isIndex())
 			return new byte[] { byte1, byte2, byte3 };
@@ -62,7 +58,7 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Can not have index offset for direct addressing.");
 		return new byte[] { register.getIndexCode(), byte1, byte2, byte3 };
 	}
-	
+
 	/**
 	 * Inserts index register prefix + offset in the object code if needed.
 	 */
@@ -76,7 +72,7 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Index offset out of range: " + offset);
 		return new byte[] { register.getIndexCode(), byte1, (byte)offset };
 	}
-	
+
 	public byte[] indexifyIndirect(Register register, byte byte1, byte byte2) {
 		if (!register.isIndex())
 			return new byte[] { byte1, byte2 };
@@ -87,7 +83,7 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Index offset out of range: " + offset);
 		return new byte[] { register.getIndexCode(), byte1, (byte)offset, byte2 };
 	}
-	
+
 	public byte[] indexifyOnlyIndirect(Register register, byte byte1, byte byte2) {
 		if (!register.isIndex())
 			return new byte[] { byte1, byte2 };
@@ -98,5 +94,5 @@ public abstract class InstructionObject {
 			throw new ArgumentException("Index offset out of range: " + offset);
 		return new byte[] { register.getIndexCode(), byte1, (byte)offset, byte2 };
 	}
-	
+
 }

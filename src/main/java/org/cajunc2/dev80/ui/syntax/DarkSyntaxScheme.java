@@ -10,7 +10,8 @@ import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 public class DarkSyntaxScheme extends SyntaxScheme {
 
-	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, 13);
+	private static final int FONT_SIZE = 14;
+	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, FONT_SIZE);
 
 	private static class Colors {
 		public static final Color FOREGROUND = UIManager.getColor("EditorPane.foreground");

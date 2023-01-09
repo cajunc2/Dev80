@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 import org.fife.ui.rsyntaxtextarea.FileLocation;
 
-public class FileFileLocation extends FileLocation {
+public class LocalFileLocation extends FileLocation {
 
       /**
        * The file. This may or may not actually exist.
@@ -21,7 +21,7 @@ public class FileFileLocation extends FileLocation {
        *
        * @param file The local file.
        */
-      FileFileLocation(File file) {
+      LocalFileLocation(File file) {
             this.file = file;
       }
 

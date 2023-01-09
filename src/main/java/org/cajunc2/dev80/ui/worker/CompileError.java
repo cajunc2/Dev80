@@ -6,14 +6,12 @@ import nl.grauw.glass.AssemblyException;
 
 public class CompileError {
 
-	private final File sourceFile;
-	private final int lineNumber;
 	private final String errorDescription;
+	private final AssemblyException assemblyException;
 
 	public CompileError(String errorDescription, AssemblyException e) {
 		this.errorDescription = errorDescription;
-		this.sourceFile = e.getSourceFile();
-		this.lineNumber = e.getLineNumber();
+		this.assemblyException = e;
 	}
 
 	public String getErrorDescription() {
@@ -21,10 +19,10 @@ public class CompileError {
 	}
 
 	public int getLineNumber() {
-		return lineNumber;
+		return assemblyException.getContexts().get(0).getLineStart();
 	}
 
 	public File getSourceFile() {
-		return sourceFile;
+		return assemblyException.getContexts().get(0).getSourceFile().getPath().toFile();
 	}
 }

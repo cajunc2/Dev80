@@ -1,11 +1,13 @@
 package org.cajunc2.dev80.ui.worker;
 
 import java.awt.Font;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.StringReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,12 +22,10 @@ import nl.grauw.glass.SourceBuilder;
 
 public class AssemblerWorker extends SwingWorker<Void, Void> {
 
-	private final String sourceCode;
 	private final MemoryView memoryView;
 	private final File workingFile;
 
-	public AssemblerWorker(String sourceCode, MemoryView memoryView, File workingFile) {
-		this.sourceCode = sourceCode;
+	public AssemblerWorker(MemoryView memoryView, File workingFile) {
 		this.memoryView = memoryView;
 		this.workingFile = workingFile;
 	}
@@ -37,12 +37,12 @@ public class AssemblerWorker extends SwingWorker<Void, Void> {
 			if (this.workingFile != null) {
 				includeDirs.addAll(Arrays.asList(this.workingFile.getParentFile().listFiles()));
 			}
-			Source source = new SourceBuilder(includeDirs).parse(new StringReader(sourceCode), workingFile);
-			source.register();
-			source.expand();
-			source.resolve();
-			byte[] objectCode = source.generateObjectCode();
-			memoryView.writeROM(objectCode);
+			List<Path> includePaths = includeDirs.stream().map(f -> f.toPath()).collect(Collectors.toList());
+			Source sourceBuilder = new SourceBuilder(includePaths).parse(workingFile.toPath());
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+				sourceBuilder.assemble(baos);
+				memoryView.writeROM(baos.toByteArray());
+			}
 		} catch (AssemblyException e) {
 			e.printStackTrace();
 			CompileError err = new CompileError(e.getPlainMessage(), e);

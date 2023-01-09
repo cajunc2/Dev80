@@ -1,47 +1,44 @@
 package nl.grauw.glass.expressions;
 
-import java.util.List;
+public class StringLiteral extends Expression {
 
-public class StringLiteral extends Literal {
-	
 	private final String string;
-	
+
 	public StringLiteral(String string) {
 		this.string = string;
 	}
-	
+
 	@Override
 	public StringLiteral copy(Context context) {
 		return this;
 	}
-	
-	@Override
-	public boolean isInteger() {
-		return string.length() == 1;
-	}
-	
-	@Override
-	public int getInteger() {
-		if (string.length() != 1)
-			throw new EvaluationException("Can not evaluate strings of more than 1 character to integer.");
-		return string.codePointAt(0);
-	}
-	
-	@Override
-	public boolean isString() {
-		return true;
-	}
-	
+
 	public String getString() {
 		return string;
 	}
-	
+
 	@Override
-	protected void addToList(List<Expression> list) {
-		for (int i = 0, length = string.length(); i < length; i++)
-			list.add(new CharacterLiteral(string.charAt(i)));
+	public boolean is(Expression type) {
+		return type.is(Type.STRING) ||
+			(type.is(Type.INTEGER) && string.length() == 1) ||
+			(type.is(Type.SEQUENCE) && string.length() > 1);
 	}
-	
+
+	@Override
+	public Expression get(Expression type) {
+		if (type.is(Type.STRING))
+			return this;
+		if (type.is(Type.INTEGER) && string.length() == 1)
+			return new CharacterLiteral(string.charAt(0));
+		if (type.is(Type.SEQUENCE) && string.length() > 1) {
+			Expression tail = new CharacterLiteral(string.charAt(string.length() - 1));
+			for (int i = string.length() - 2; i >= 0; i--)
+				tail = new Sequence(new CharacterLiteral(string.charAt(i)), tail);
+			return tail;
+		}
+		return super.get(type);
+	}
+
 	public String toString() {
 		String escaped = string;
 		escaped = escaped.replace("\\", "\\\\");
@@ -55,9 +52,9 @@ public class StringLiteral extends Literal {
 		escaped = escaped.replace("\33", "\\e");
 		return "\"" + escaped + "\"";
 	}
-	
+
 	public String toDebugString() {
 		return toString();
 	}
-	
+
 }

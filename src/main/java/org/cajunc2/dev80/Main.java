@@ -15,12 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-
 import org.cajunc2.dev80.newui.WelcomeWindow;
 import org.cajunc2.dev80.newui.menu.MainMenuBar;
 import org.cajunc2.dev80.ui.Icons;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
 	private static final Logger logger = Logger.getLogger(Main.class.getName());
@@ -87,15 +87,11 @@ public class Main {
 	 */
 	private static boolean isMacDarkMode() {
 		try {
-			// check for exit status only. Once there are more modes than "dark" and
-			// "default", we might need to analyze string contents..
-			final Process proc = Runtime.getRuntime()
+			Process proc = Runtime.getRuntime()
 					.exec(new String[] { "defaults", "read", "-g", "AppleInterfaceStyle" });
 			proc.waitFor(100, TimeUnit.MILLISECONDS);
 			return proc.exitValue() == 0;
 		} catch (Exception ex) {
-			// IllegalThreadStateException thrown by proc.exitValue(), if process didn't
-			// terminate
 			System.err.println(
 					"Could not determine, whether 'dark mode' is being used. Falling back to default (light) mode.");
 			return false;

@@ -169,6 +169,7 @@ public class InstructionHelp {
 			logger.log(Level.WARNING, id.getClass().getName());
 			logger.log(Level.WARNING, map.get(mnemonic).getClass().getName());
 		}
+		map.put(mnemonic.toUpperCase(), id);
 		map.put(mnemonic, id);
 	}
 }

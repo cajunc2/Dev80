@@ -1,32 +1,34 @@
 package nl.grauw.glass.expressions;
 
-public class CharacterLiteral extends Literal {
-	
+public class CharacterLiteral extends Expression {
+
 	private final char character;
-	
+
 	public CharacterLiteral(char character) {
 		this.character = character;
 	}
-	
+
 	@Override
 	public CharacterLiteral copy(Context context) {
 		return this;
 	}
-	
+
 	public char getCharacter() {
 		return character;
 	}
-	
+
 	@Override
-	public boolean isInteger() {
-		return true;
+	public boolean is(Expression type) {
+		return type.is(Type.INTEGER);
 	}
-	
+
 	@Override
-	public int getInteger() {
-		return character;
+	public Expression get(Expression type) {
+		if (type.is(Type.INTEGER))
+			return IntegerLiteral.of(character);
+		return super.get(type);
 	}
-	
+
 	public String toString() {
 		String escaped = Character.toString(character);
 		escaped = escaped.replace("\\", "\\\\");
@@ -40,9 +42,9 @@ public class CharacterLiteral extends Literal {
 		escaped = escaped.replace("\33", "\\e");
 		return "'" + escaped + "'";
 	}
-	
+
 	public String toDebugString() {
 		return toString();
 	}
-	
+
 }

@@ -3,6 +3,7 @@ package org.cajunc2.dev80.project;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,27 @@ public class Project {
 		this.projectDir = projectFile.getParentFile();
 		String jsonString = new String(Files.readAllBytes(projectFile.toPath()));
 		this.projectData = new Gson().fromJson(jsonString, ProjectData.class);
+	}
+
+	public static Project loadFromDirectory(File dir) {
+		if (dir == null) {
+			return null;
+		}
+		try {
+			if (dir.isDirectory()) {
+				File[] projectFiles = dir.listFiles(f -> f.getName().equals(Project.FILE_NAME));
+				if (projectFiles.length == 1) {
+					return new Project(projectFiles[0]);
+				}
+				Project newProject = new Project(dir, dir.getName());
+				newProject.addFiles(Arrays.asList(dir.listFiles()));
+				return newProject;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 
 	public void save() throws Exception {

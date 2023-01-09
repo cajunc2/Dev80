@@ -32,25 +32,18 @@ class FileMenu extends JMenu {
 		});
 		add(newProjectItem);
 
-		JMenuItem openProjectItem = new JMenuItem("Open Project...");
+		JMenuItem openProjectItem = new JMenuItem("Open Folder...");
 		openProjectItem.setAccelerator(
 				KeyStroke.getKeyStroke('O', InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		openProjectItem.addActionListener((evt) -> {
-			JFileChooser chooser = new ProjectFileChooser();
+			JFileChooser chooser = new JFileChooser();
+			chooser.setFileHidingEnabled(true);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			chooser.showOpenDialog(null);
-			File projectFile = chooser.getSelectedFile();
-			if (projectFile == null) {
-				return;
-			}
-			try {
-				Project project = new Project(projectFile);
-				new ProjectWindow(project).setVisible(true);
-				Events.PROJECT_OPENED.publish(project);
-			} catch (RuntimeException e) {
-				throw e;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			File selectedFile = chooser.getSelectedFile();
+                  Project project = Project.loadFromDirectory(selectedFile);
+			new ProjectWindow(project).setVisible(true);
+			Events.PROJECT_OPENED.publish(project);
 		});
 		add(openProjectItem);
 
@@ -60,8 +53,8 @@ class FileMenu extends JMenu {
 
 		JMenuItem newFile = new JMenuItem("New File");
 		newFile.setAccelerator(KeyStroke.getKeyStroke('N', InputEvent.META_DOWN_MASK));
-		newFile.addActionListener((event) ->{
-			
+		newFile.addActionListener((event) -> {
+
 		});
 		add(newFile);
 
@@ -124,20 +117,6 @@ class FileMenu extends JMenu {
 			}
 		});
 		add(saveAll);
-	}
-
-	private static class ProjectFileChooser extends JFileChooser {
-		private static final long serialVersionUID = 1L;
-
-		public ProjectFileChooser() {
-			this.setFileHidingEnabled(false);
-		}
-
-		@Override
-		public boolean accept(File f) {
-			return (f.isDirectory() && !f.getName().startsWith(".")) || Project.FILE_NAME.equals(f.getName());
-		}
-
 	}
 
 }

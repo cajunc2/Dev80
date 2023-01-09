@@ -50,11 +50,6 @@ public class EditorWindow extends JFrame {
             RTextScrollPane scrollPane = new RTextScrollPane(editor);
             scrollPane.setBorder(BorderFactory.createEmptyBorder());
             scrollPane.setLineNumbersEnabled(false);
-            // scrollPane.getGutter().setIconRowHeaderInheritsGutterBackground(true);
-            // scrollPane.getGutter().setLineNumberFont(new Font("Consolas", Font.PLAIN,
-            // 12));
-            // scrollPane.setIconRowHeaderEnabled(true);
-            // scrollPane.getGutter().setBookmarkingEnabled(true);
             this.add(scrollPane, BorderLayout.CENTER);
 
             JToolBar statusBar = new JToolBar();
@@ -238,7 +233,7 @@ public class EditorWindow extends JFrame {
             chooser.setDialogType(JFileChooser.SAVE_DIALOG);
             if (JFileChooser.APPROVE_OPTION == chooser.showSaveDialog(this)) {
                   try {
-                        this.editor.saveAs(new FileFileLocation(chooser.getSelectedFile()));
+                        this.editor.saveAs(new LocalFileLocation(chooser.getSelectedFile()));
                         this.setTitle(this.file.getName());
                   } catch (IOException e) {
                         e.printStackTrace();

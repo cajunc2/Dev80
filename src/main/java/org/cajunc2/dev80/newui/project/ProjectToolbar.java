@@ -14,11 +14,11 @@ class ProjectToolbar extends JToolBar {
             this.setFloatable(false);
             this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("Separator.foreground")));
 
-            JButton projectPropertiesButton = new JButton(Icons.PROJECT_PROPERTIES);
-            projectPropertiesButton.setToolTipText("Project properties");
-            this.add(projectPropertiesButton);
+            // JButton projectPropertiesButton = new JButton(Icons.PROJECT_PROPERTIES);
+            // projectPropertiesButton.setToolTipText("Project properties");
+            // this.add(projectPropertiesButton);
 
-            this.addSeparator();
+            // this.addSeparator();
 
             JButton addFileButton = new JButton(Icons.ADD_FILE);
             addFileButton.setToolTipText("Add files");

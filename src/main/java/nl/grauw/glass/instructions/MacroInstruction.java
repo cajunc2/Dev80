@@ -19,30 +19,23 @@ public class MacroInstruction extends InstructionFactory {
 		this.parameters = parameters;
 		this.source = source;
 
-		if (parameters == null) {
-			return;
-		}
-		Expression parameter = parameters.getElement(0);
+		Expression parameter = parameters != null ? parameters.getElement(0) : null;
 		for (int i = 0; parameter != null; i++) {
-			if (!(parameter instanceof Identifier)
-			        && !(parameter instanceof Equals && ((Equals) parameter).getTerm1() instanceof Identifier))
+			if (!(parameter instanceof Identifier) &&
+					!(parameter instanceof Equals && ((Equals)parameter).getTerm1() instanceof Identifier))
 				throw new ArgumentException("Parameter must be an identifier.");
 			parameter = parameters.getElement(i);
 		}
 	}
 
 	@Override
-	public List<Line> expand(Line line) {
-		Scope parameterScope = new ParameterScope(source.getScope(), parameters, line.getArguments());
-		List<Line> lines = super.expand(line);
-		List<Line> lineCopies = source.getLineCopies(parameterScope);
-		for (Line lineCopy : lineCopies) {
-			lineCopy.register(parameterScope);
-			lineCopy.register(line.getScope());
-		}
-		for (Line lineCopy : lineCopies)
-			lines.addAll(lineCopy.expand());
-		return lines;
+	public void expand(Line line, List<Line> lines) {
+		super.expand(line, lines);
+		Scope parameterScope = new ParameterScope(source.getScope().getParent(), parameters, line.getArguments());
+		Source sourceCopy = source.copy(parameterScope);
+		sourceCopy.register();
+		sourceCopy.register(line.getScope());
+		sourceCopy.expand(lines);
 	}
 
 	@Override

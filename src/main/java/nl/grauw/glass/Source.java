@@ -6,98 +6,94 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.grauw.glass.expressions.Expression;
+import nl.grauw.glass.expressions.IntegerLiteral;
+
 public class Source {
-	
+
 	private final Scope scope;
 	private List<Line> lines = new ArrayList<Line>();
-	
-	public Source() {
-		scope = new GlobalScope();
-	}
-	
+
 	public Source(Scope scope) {
 		this.scope = scope;
 	}
-	
-	public Source(Scope scope, Source other) {
-		this(scope);
-		for (Line line : other.lines)
-			addLine(new Line(new Scope(scope), line));
-	}
-	
+
 	public Scope getScope() {
 		return scope;
 	}
-	
+
 	public List<Line> getLines() {
 		return lines;
 	}
-	
+
 	public Line getLastLine() {
 		return lines.size() > 0 ? lines.get(lines.size() - 1) : null;
 	}
-	
-	public List<Line> getLineCopies(Scope newParent) {
-		List<Line> lineCopies = new ArrayList<>();
+
+	public Source copy(Scope scope) {
+		Source newSource = new Source(scope);
 		for (Line line : lines)
-			lineCopies.add(new Line(new Scope(newParent), line));
-		return lineCopies;
+			newSource.addLine(line.copy(new Scope(scope)));
+		return newSource;
 	}
-	
-	public Line addLine(Line line) {
+
+	public void addLine(Line line) {
 		lines.add(line);
-		return line;
 	}
-	
-	public List<Line> addLines(List<Line> lines) {
+
+	public void addLines(List<Line> lines) {
 		this.lines.addAll(lines);
-		return lines;
 	}
-	
+
 	public void assemble(OutputStream output) throws IOException {
 		register();
 		expand();
 		resolve();
-		generateObjectCode(output);
+
+		byte[] objectCode = getBytes();
+		output.write(objectCode, 0, objectCode.length);
 	}
-	
+
 	public void register() {
+		register(scope);
+	}
+
+	public void register(Scope scope) {
 		for (Line line : lines)
 			line.register(scope);
 	}
-	
+
 	public void expand() {
 		List<Line> newLines = new ArrayList<>();
-		for (Line line : lines)
-			newLines.addAll(line.expand());
+		expand(newLines);
 		lines = newLines;
 	}
-	
-	public int resolve() {
-		return resolve(0);
+
+	public void expand(List<Line> newLines) {
+		for (Line line : lines)
+			line.expand(newLines);
 	}
-	
-	public int resolve(int address) {
+
+	public Expression resolve() {
+		return resolve(IntegerLiteral.ZERO);
+	}
+
+	public Expression resolve(Expression address) {
 		for (Line line : lines)
 			address = line.resolve(address);
 		return address;
 	}
-	
-	public void generateObjectCode(OutputStream output) throws IOException {
-		for (Line line : lines)
-			line.generateObjectCode(output);
-	}
-	
-	public byte[] generateObjectCode() {
+
+	public byte[] getBytes() {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		try {
-			generateObjectCode(bytes);
-		} catch (IOException e) {
-			throw new AssemblyException(e);
+		for (Line line : lines)
+		{
+			byte[] object = line.getBytes();
+			bytes.write(object, 0, object.length);
 		}
 		return bytes.toByteArray();
 	}
-	
+
 	public String toString() {
 		StringBuilder string = new StringBuilder();
 		for (Line line : lines) {
@@ -106,5 +102,5 @@ public class Source {
 		}
 		return string.toString();
 	}
-	
+
 }

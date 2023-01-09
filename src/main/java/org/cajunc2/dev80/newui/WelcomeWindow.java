@@ -24,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,6 +35,7 @@ import org.cajunc2.dev80.newui.menu.RecentProjectsMenu;
 import org.cajunc2.dev80.newui.project.ProjectWindow;
 import org.cajunc2.dev80.project.Project;
 import org.cajunc2.dev80.ui.Icons;
+import org.cajunc2.dev80.ui.topic.Events;
 import org.cajunc2.dev80.ui.util.WindowPositionUtil;
 
 public class WelcomeWindow extends JFrame {
@@ -65,10 +67,17 @@ public class WelcomeWindow extends JFrame {
 
             contentPane.add(versionLabel);
 
-            JButton newProjectButton = new JButton("Create New Project", Icons.ADD_LARGE);
+            JButton newProjectButton = new JButton("Open Folder", Icons.ADD_LARGE);
             newProjectButton.setIconTextGap(16);
             newProjectButton.addActionListener((evt) -> {
-                  new NewProjectDialog().setVisible(true);
+                  JFileChooser chooser = new JFileChooser();
+                  chooser.setFileHidingEnabled(true);
+                  chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                  chooser.showOpenDialog(null);
+                  File selectedFile = chooser.getSelectedFile();
+                  Project project = Project.loadFromDirectory(selectedFile);
+                  new ProjectWindow(project).setVisible(true);
+                  Events.PROJECT_OPENED.publish(project);
                   WelcomeWindow.this.setVisible(false);
             });
             contentPane.add(newProjectButton);

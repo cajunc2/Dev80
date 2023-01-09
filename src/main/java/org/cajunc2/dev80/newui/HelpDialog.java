@@ -48,7 +48,6 @@ public class HelpDialog extends JDialog implements TopicHandler<AssemblyEditor> 
 		this.setType(Type.UTILITY);
 		this.setFocusableWindowState(false);
 
-
             opcodes.setTableHeader(new JTableHeader(opcodes.getColumnModel()) {
                   private static final long serialVersionUID = 1L;
 
@@ -143,7 +142,7 @@ public class HelpDialog extends JDialog implements TopicHandler<AssemblyEditor> 
 	@Override
 	public void topicReceived(AssemblyEditor payload) {
 		String code = payload.getCurrentLineCode();
-		String[] pieces = code.split(" ");
+		String[] pieces = code.split("\\s+");
 		display(instructions.get(pieces[0]));
 	}
 

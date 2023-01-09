@@ -7,10 +7,10 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 public class LightSyntaxScheme extends SyntaxScheme {
-
-	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, 12);
-	private static final Font ITALIC = new Font("Consolas", Font.ITALIC, 12);
-	private static final Font BOLD = new Font("Consolas", Font.BOLD, 12);
+	private static final int FONT_SIZE = 14;
+	private static final Font PLAIN = new Font("Consolas", Font.PLAIN, FONT_SIZE);
+	private static final Font ITALIC = new Font("Consolas", Font.ITALIC, FONT_SIZE);
+	private static final Font BOLD = new Font("Consolas", Font.BOLD, FONT_SIZE);
 
 	private static class Colors {
 		public static final Color COMMENT = new Color(160, 160, 160);

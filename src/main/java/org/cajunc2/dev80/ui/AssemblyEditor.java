@@ -2,6 +2,7 @@ package org.cajunc2.dev80.ui;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
@@ -69,8 +70,9 @@ public class AssemblyEditor extends TextEditorPane {
 		this.setMarginLineColor(new Color(focusColor.getRGB() & 0x33ffffff, true));
 		this.setForeground(UIManager.getColor("EditorPane.foreground"));
 		
-		this.setMarginLineEnabled(true);
-		this.setMarginLinePosition(36);
+		this.setFont(new Font("Consolas", Font.PLAIN, 14));
+		// this.setMarginLineEnabled(true);
+		// this.setMarginLinePosition(36);
 		this.setHyperlinksEnabled(true);
 		if (project != null) {
 			this.setLinkGenerator(new LabelLinkGenerator(project.getLabelIndex()));
